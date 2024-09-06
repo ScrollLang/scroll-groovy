@@ -1,0 +1,132 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+    id 'com.gradleup.shadow' version '8.3.0'
+    id 'fabric-loom' version '1.7-SNAPSHOT'
+    id 'maven-publish'
+    id 'java'
+}
+
+compileTestJava.options.encoding = 'UTF-8'
+compileJava.options.encoding = 'UTF-8'
+
+def mainClassName = 'org.scrolllang.groovy.ScrollGroovy'
+
+archivesBaseName = project.archives_base_name
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+configurations {
+    shade.extendsFrom include
+}
+
+repositories {
+    mavenCentral()
+
+    // Scroll
+    maven {
+        url = 'https://maven.pkg.github.com/ScrollLang/Scroll'
+        credentials {
+            username = System.getenv('PACKAGES_USER') ?: project.findProperty('scrollUsername')
+            password = System.getenv('PACKAGES_KEY') ?: project.findProperty('scrollPassword')
+        }
+    }
+
+    // skript-parser
+    maven {
+        url = 'https://maven.pkg.github.com/ScrollLang/skript-parser'
+        credentials {
+            username = System.getenv('PACKAGES_USER') ?: project.findProperty('scrollUsername')
+            password = System.getenv('PACKAGES_KEY') ?: project.findProperty('scrollPassword')
+        }
+    }
+}
+
+loom {
+    splitEnvironmentSourceSets()
+
+    mods {
+        scroll {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+    }
+}
+
+dependencies {
+
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    // Fabric API
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    // Groovy
+    modImplementation shade('org.apache.groovy:groovy-jsr223:4.0.22')
+    modImplementation shade('org.apache.groovy:groovy-all:4.0.22')
+
+    // Scroll & skript-parser
+    modImplementation ('org.scrolllang:skript-parser:alpha5')
+    modImplementation ('org.scrolllang:scroll-dev:1.21.1+dev.2') {
+        transitive = false
+    }
+
+}
+
+processResources {
+    inputs.property 'version', project.version
+    filesMatching('fabric.mod.json') {
+        expand 'version': project.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 21
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
+java {
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+jar {
+    from('LICENSE') {
+        rename {
+            "${it}_${project.base.archivesName.get()}"
+        }
+    }
+    manifest {
+        attributes('Main-Class': mainClassName,
+            'Implementation-Title': 'scroll-groovy',
+            'Implementation-Version': project.property('version'))
+    }
+}
+
+// configure the maven publication
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+processResources {
+    filter ReplaceTokens, tokens: ['version': project.property('version')]
+}
+
+shadowJar {
+    configurations = [project.configurations.shade]
+}

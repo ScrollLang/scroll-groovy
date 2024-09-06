@@ -1,0 +1,34 @@
+## OSX
+*.DS_Store
+
+## Java
+*.hprof
+*.jfr
+bin/
+
+## Gradle
+classes/
+.gradle/
+build/
+out/
+
+## Fabric
+remappedSrc/
+run/
+
+## Eclipse
+.classpath
+*.launch
+.project
+
+## IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+
+## vscode
+.settings/
+.vscode/
+.classpath
+.project
