@@ -67,7 +67,7 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     // Groovy
-    modImplementation shade('org.apache.groovy:groovy-jsr223:4.0.22')
+    modImplementation shade('org.apache.groovy:groovy-jsr223:4.0.23')
     modImplementation shade('org.apache.groovy:groovy-all:4.0.23')
 
     // Scroll & skript-parser
