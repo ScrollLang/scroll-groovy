@@ -5,10 +5,16 @@ import org.scrolllang.groovy.ScrollGroovy;
 import org.scrolllang.scroll.ScrollRegistration;
 import org.scrolllang.scroll.exceptions.EmptyStacktraceException;
 
-public class AddonBindings {
+public final class ScrollGroovyBindings {
+
+  private final ScrollGroovy instance;
+
+  public ScrollGroovyBindings(ScrollGroovy instance) {
+    this.instance = instance;
+  }
 
   public EmptyStacktraceException printException(Exception e, String message) {
-    return ScrollGroovy.getInstance().printException(e, message);
+    return instance.printException(e, message);
   }
 
   public ScrollRegistration getRegistration() {
@@ -16,19 +22,19 @@ public class AddonBindings {
   }
 
   public Logger getLogger() {
-    return ScrollGroovy.getInstance().getLogger();
+    return instance.getLogger();
   }
 
   public void error(String message) {
-    ScrollGroovy.getInstance().error(message);
+    instance.error(message);
   }
 
   public void warn(String message) {
-    ScrollGroovy.getInstance().warn(message);
+    instance.warn(message);
   }
 
   public void info(String message) {
-    ScrollGroovy.getInstance().info(message);
+    instance.info(message);
   }
 
 }
