@@ -1,5 +1,9 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
+buildscript {
+    apply from: 'dependencies.gradle'
+}
+
 plugins {
     id 'com.gradleup.shadow' version '8.3.2'
     id 'fabric-loom' version '1.7-SNAPSHOT'
@@ -67,12 +71,12 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     // Groovy
-    modImplementation shade('org.apache.groovy:groovy-jsr223:4.0.23')
-    modImplementation shade('org.apache.groovy:groovy-all:4.0.23')
+    modImplementation shade("org.apache.groovy:groovy-jsr223:${project.groovy_version}")
+    modImplementation shade("org.apache.groovy:groovy-all:${project.groovy_version}")
 
     // Scroll & skript-parser
-    modImplementation ('org.scrolllang:skript-parser:alpha5')
-    modImplementation ('org.scrolllang:scroll-dev:1.21.1+dev.2') {
+    modImplementation ("org.scrolllang:skript-parser:${project.skript_parser_version}")
+    modImplementation ("org.scrolllang:scroll-dev:${project.scroll_version}") {
         transitive = false
     }
 
