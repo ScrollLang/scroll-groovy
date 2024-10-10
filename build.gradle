@@ -31,6 +31,9 @@ configurations {
 repositories {
     mavenCentral()
 
+    // Fabric to allow reference for Dependabot
+    maven { url 'https://maven.fabricmc.net' }
+
     // Scroll
     maven {
         url = 'https://maven.pkg.github.com/ScrollLang/Scroll'
