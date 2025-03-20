@@ -9,7 +9,7 @@ ext {
 	loader_version = '0.16.10'
 
 	// Fabric api
-	fabric_version = '0.112.2+'
+	fabric_version = '0.119.2+'
 
 	// Mod Properties
 	mod_version = '1.0'
