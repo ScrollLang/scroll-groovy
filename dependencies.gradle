@@ -17,7 +17,7 @@ ext {
 	archives_base_name = 'scroll-groovy'
 
 	// Groovy
-	groovy_version = '4.0.26'
+	groovy_version = '4.0.27'
 
 	// Scroll & skript-parser
 	skript_parser_version = 'alpha5'
